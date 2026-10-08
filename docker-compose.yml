@@ -1,0 +1,22 @@
+# Termix deployment for Portainer (nj106 fork).
+# - bridge network mode (no dedicated project network)
+# - host port 8082 -> container 8080
+# guacd (RDP/VNC remote desktop) intentionally omitted: it is optional and
+# container-name DNS does not work on the default bridge network.
+# SSH terminals work without it; add guacd later if remote desktop is needed.
+services:
+  termix:
+    image: ghcr.io/lukegus/termix:latest
+    container_name: termix
+    network_mode: bridge
+    restart: unless-stopped
+    ports:
+      - "8082:8080"
+    volumes:
+      - termix-data:/app/data
+    environment:
+      PORT: "8080"
+
+volumes:
+  termix-data:
+    driver: local
